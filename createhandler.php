@@ -3,6 +3,7 @@ session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 include ("$root/configs/config.php");
 include ("$root/configs/loginconfig.php");
+
 try {
     $dbh = new PDO(DB_DSN, DB_USER, DB_PASSWORD);
 } catch (PDOException $e) {
@@ -16,6 +17,7 @@ if (isset($_POST['username'])){
 } else {
     $_SESSION['err'] = 2;
     header("Location: " . FW_ERR_CREATE);
+    exit();
 }
 if(count($usr) == 0){
     if(isset($_POST['first_name']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['email'])){
@@ -30,22 +32,25 @@ if(count($usr) == 0){
                     $_SESSION['err'] = 12;
                     header("Location: " . FW_ERR_CREATE);
                     exit();
-                    return;
                 }
                 $sth->execute();
                 $_SESSION['err'] = 0;
                 header("Location: " . FW_CREATE_SCC);
+                exit();
             } 
             catch (PDOException $e){
                 $_SESSION['err'] = 9;
                 header("Location: " . FW_ERR_CREATE);
+                exit();
         }
     } else {
         $_SESSION['err'] = 2;
         header("Location: " . FW_ERR_CREATE);
+        exit();
     }
 } else {
     $_SESSION['err'] = 10;
     header("Location: " . FW_ERR_CREATE);
+    exit();
 } 
 ?>
